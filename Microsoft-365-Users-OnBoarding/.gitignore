@@ -1,0 +1,4 @@
+# Ignore everything in this directory
+00-AzureUserManagement.ps1
+test_import_3A2.csv
+Import_User_Sample.csv
