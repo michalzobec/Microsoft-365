@@ -1,18 +1,40 @@
 ﻿<#
 .SYNOPSIS
-Get Security Group Members to CSV
-
-.VERSION
-    24.10.03.140059
-
-.SHORTVERSION
-    24.10.1
+Get Security Groups Members to CSV
 
 .DESCRIPTION
-Get Security Group Members to CSV
-(c) 2021-2024 Michal Zobec, ZOBEC Consulting. All Rights Reserved.  
-web: www.michalzobec.cz, mail: michal@zobec.net  
+Get Members from Security Groups on Azure and Save to CSV
+
+.COPYRIGHT
+(c) 2021-2024 Michal Zobec, ZOBEC Consulting. All Rights Reserved.
+
+.VERSION
+24.10.06.224559
+
+.SHORTVERSION
+24.10.1
+
+.OUTPUTS
+Output to console and log file.
+
+.EXAMPLE
+C:\> Get-Security-Group-Members-To-CSV.ps1
+
+.NOTES
+Contact Email: michal@zobec.cz
+
+.LINK
+About this script on my Blog in Czech https://www.michalzobec.cz
+
+.LINK
+Documentation (ReadMe) https://github.com/michalzobec/esi-build/blob/master/readme.md
+
+.LINK
+Release Notes (ChangeLog) https://github.com/michalzobec/esi-build/blob/master/changelog.md
+
+.LINK
 GitHub repository http://zob.ec/
+
 #>
 
 # Function to retrieve specific sections from the script header
@@ -67,19 +89,25 @@ Write-Log "Script execution started."
 try {
     # Retrieve the version, short version, and description from the script header
     $scriptPath = $MyInvocation.MyCommand.Path
+    $SYNOPSIS = Get-ScriptHeaderSection -scriptPath $scriptPath -sectionName ".SYNOPSIS"
     $DESCRIPTION = Get-ScriptHeaderSection -scriptPath $scriptPath -sectionName ".DESCRIPTION"
+    $COPYRIGHT = Get-ScriptHeaderSection -scriptPath $scriptPath -sectionName ".COPYRIGHT"
     $VERSION = Get-ScriptHeaderSection -scriptPath $scriptPath -sectionName ".VERSION"
     $SHORTVERSION = Get-ScriptHeaderSection -scriptPath $scriptPath -sectionName ".SHORTVERSION"
 
     # Check if all required sections are present
-    if (-not $DESCRIPTION -or -not $VERSION -or -not $SHORTVERSION) {
+    if (-not $SYNOPSIS -or -not $DESCRIPTION -or -not $COPYRIGHT -or -not $VERSION -or -not $SHORTVERSION) {
         Write-Log "Error: One or more required sections are missing from the script header." "ERROR"
         exit 1
     }
 
     # Log the version and description information
-    Write-Log "Description: $DESCRIPTION"
+    Write-Log " "
+    Write-Log "$SYNOPSIS"
+    Write-Log "$DESCRIPTION"
+    Write-Log "$COPYRIGHT"
     Write-Log "Version: $SHORTVERSION ($VERSION)"
+    Write-Log " "
 
     # Load credentials from CSV file
     $credentialsPath = "app_credentials.csv"  # Path to your CSV file
